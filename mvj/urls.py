@@ -96,6 +96,7 @@ from leasing.viewsets.lease_additional_views import (
 )
 from leasing.viewsets.leasehold_transfer import LeaseholdTransferViewSet
 from leasing.viewsets.rent import IndexViewSet
+from leasing.viewsets.service_unit import ServiceUnitViewSet
 from leasing.viewsets.ui_data import UiDataViewSet
 from leasing.viewsets.vat import VatViewSet
 from plotsearch.views import (
@@ -179,6 +180,7 @@ router.register(r"receivable_type", ReceivableTypeViewSet)
 router.register(r"related_lease", RelatedLeaseViewSet)
 router.register(r"report", ReportViewSet, basename="report")
 router.register(r"special_project", SpecialProjectViewSet)
+router.register(r"service_unit", ServiceUnitViewSet)
 router.register(r"reservation_procedure", ReservationProcedureViewSet)
 router.register(r"statistical_use", StatisticalUseViewSet)
 router.register(r"supportive_housing", SupportiveHousingViewSet)
