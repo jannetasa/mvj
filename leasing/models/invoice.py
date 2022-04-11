@@ -485,6 +485,7 @@ class Invoice(TimeStampedSafeDeleteModel):
 
         credit_note = Invoice.objects.create(
             lease=self.lease,
+            service_unit=self.lease.service_unit,
             type=InvoiceType.CREDIT_NOTE,
             recipient=self.recipient,
             due_date=self.due_date,
