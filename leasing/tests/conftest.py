@@ -16,11 +16,11 @@ from leasing.enums import (
     IndexType,
     InvoiceState,
     InvoiceType,
+    LandUseAgreementLitigantContactType,
     LandUseContractType,
     RentAdjustmentType,
     RentCycle,
     RentType,
-    TenantContactType,
 )
 from leasing.models import (
     Area,
@@ -40,6 +40,7 @@ from leasing.models import (
     RelatedLease,
     Rent,
     RentAdjustment,
+    ServiceUnit,
     UiData,
 )
 from leasing.models.invoice import (
@@ -179,6 +180,13 @@ class InvoiceFactory(factory.DjangoModelFactory):
     state = InvoiceState.OPEN
     due_date = timezone.now().date()
     type = InvoiceType.CHARGE
+
+    @factory.lazy_attribute
+    def service_unit(self):
+        if self.lease and self.lease.service_unit:
+            return self.lease.service_unit
+
+        return None
 
     class Meta:
         model = Invoice
@@ -340,6 +348,12 @@ class ContractFactory(factory.DjangoModelFactory):
 class DecisionMakerFactory(factory.DjangoModelFactory):
     class Meta:
         model = DecisionMaker
+
+
+@register
+class ServiceUnitFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = ServiceUnit
 
 
 @pytest.fixture
@@ -639,6 +653,7 @@ def lease_data_dict_with_contacts(contact_factory):
         "hitas": 1,
         "notice_period": 1,
         "lessor": test_contacts[0].id,
+        "service_unit": 1,
         "tenants": [
             {
                 "share_numerator": 1,
@@ -794,13 +809,13 @@ def land_use_agreement_test_data(
     ]
 
     land_use_agreement_litigant_contact_factory(
-        type=TenantContactType.TENANT,
+        type=LandUseAgreementLitigantContactType.TENANT,
         land_use_agreement_litigant=litigants[0],
         contact=contacts[0],
         start_date=timezone.now().replace(year=2019).date(),
     ),
     land_use_agreement_litigant_contact_factory(
-        type=TenantContactType.TENANT,
+        type=LandUseAgreementLitigantContactType.TENANT,
         land_use_agreement_litigant=litigants[1],
         contact=contacts[1],
         start_date=timezone.now().replace(year=2019).date(),
